@@ -1,101 +1,190 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { GraduationCap, BookOpen, Users, CheckCircle, Search } from "lucide-react";
 
-export default function Home() {
+
+
+export default function LandingPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-gray-800 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <Link className="flex items-center space-x-2" href="#">
+              <GraduationCap className="h-8 w-8 text-primary" />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">LearnHub</span>
+            </Link>
+            <div className="hidden md:block flex-1 px-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                <Input
+                  className="w-full pl-10 pr-4 py-2 rounded-full border-gray-300 focus:border-primary focus:ring-primary"
+                  placeholder="Search for anything"
+                  type="search"
+                />
+              </div>
+            </div>
+            <nav className="hidden md:flex items-center space-x-4">
+              <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary" href="#">
+                Courses
+              </Link>
+              <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary" href="#">
+                Pricing
+              </Link>
+              <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary" href="#">
+                About
+              </Link>
+              <Button variant="outline" className="ml-4">Log in</Button>
+              <Button>Sign up</Button>
+            </nav>
+            <button className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+              <span className="sr-only">Open menu</span>
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
+      </header>
+      <main className="flex-1">
+        <section className="bg-gradient-to-r from-primary to-primary-dark text-white">
+          <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                Learn without limits
+              </h1>
+              <p className="mt-6 text-xl">
+                Start, switch, or advance your career with more than 5,000 courses, Professional Certificates, and degrees from world-class universities and companies.
+              </p>
+              <div className="mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+                <Button size="lg" className="bg-white text-primary hover:bg-gray-100">
+                  Join for Free
+                </Button>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                  Try LearnHub Business
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl text-center mb-12">
+              Featured Courses
+            </h2>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                { title: "Web Development Bootcamp", description: "Learn full-stack web development", price: "$99.99", image: "https://source.unsplash.com/random/800x600?web", link: '/course-detail' },
+                { title: "Data Science Fundamentals", description: "Master the basics of data science", price: "$89.99", image: "https://source.unsplash.com/random/800x600?data", link: '/course-detail' },
+                { title: "Digital Marketing Mastery", description: "Become a digital marketing expert", price: "$79.99", image: "https://source.unsplash.com/random/800x600?marketing", link: '/course-detail' },
+              ].map((course, index) => (
+                <Card key={index} className="overflow-hidden">
+                  <img src={course.image} alt={course.title} className="h-48 w-full object-cover" />
+                  <CardHeader>
+                    <CardTitle className="text-xl">{course.title}</CardTitle>
+                    <CardDescription>{course.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter className="flex justify-between items-center">
+                    <span className="text-2xl font-bold text-primary">{course.price}</span>
+                    <Link href={course.link} className="text-primary">
+                      <Button>Enroll Now</Button>
+                    </Link>
+
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="bg-gray-100 dark:bg-gray-800 py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl text-center mb-12">
+              Why Choose LearnHub?
+            </h2>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                { icon: BookOpen, title: "Wide Range of Courses", description: "Access thousands of courses in various subjects" },
+                { icon: Users, title: "Expert Instructors", description: "Learn from industry professionals and thought leaders" },
+                { icon: CheckCircle, title: "Flexible Learning", description: "Study at your own pace, anytime and anywhere" },
+              ].map((feature, index) => (
+                <div key={index} className="flex flex-col items-center text-center bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+                  <feature.icon className="w-12 h-12 mb-4 text-primary" />
+                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                Start Your Learning Journey Today
+              </h2>
+              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                Join millions of learners and transform your career with LearnHub.
+              </p>
+              <div className="mt-8">
+                <form className="sm:flex justify-center">
+                  <Input type="email" placeholder="Enter your email" className="w-full sm:w-64" />
+                  <Button type="submit" className="mt-3 sm:mt-0 sm:ml-3 w-full sm:w-auto">
+                    Get Started
+                  </Button>
+                </form>
+                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                  By signing up, you agree to our Terms of Service and Privacy Policy.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="bg-gray-900 text-white">
+        <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">Company</h3>
+              <ul className="mt-4 space-y-2">
+                <li><Link className="text-gray-300 hover:text-white" href="#">About</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Careers</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Press</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">Community</h3>
+              <ul className="mt-4 space-y-2">
+                <li><Link className="text-gray-300 hover:text-white" href="#">Learners</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Partners</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Developers</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">Legal</h3>
+              <ul className="mt-4 space-y-2">
+                <li><Link className="text-gray-300 hover:text-white" href="#">Privacy</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Terms</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Cookie Policy</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">Connect</h3>
+              <ul className="mt-4 space-y-2">
+                <li><Link className="text-gray-300 hover:text-white" href="#">Facebook</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">Twitter</Link></li>
+                <li><Link className="text-gray-300 hover:text-white" href="#">LinkedIn</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-12 border-t border-gray-800 pt-8">
+            <p className="text-center text-sm text-gray-400">
+              © 2024 LearnHub. All rights reserved.
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
