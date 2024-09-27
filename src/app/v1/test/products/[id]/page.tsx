@@ -1,9 +1,14 @@
-import { container } from '@/di/container';
+'use client';
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+import { useProductQuery } from '@/interface-adapters/query/productQueries';
+
+export default function ProductPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const productController = container.product.controller;
-  const product = await productController.getProduct(id);
+  const { data: product, isLoading, error } = useProductQuery(id);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
+  if (!product) return <div>Product not found</div>;
 
   return (
     <div>
