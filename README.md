@@ -34,3 +34,19 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Step-by-step guide to create a new page:
+
+1. Define the entity (ie. src/entities/models/product.ts)
+2. Create the repository interface (ie. src/application/repositories/productRepository.ts)
+3. Implement the repository (ie. src/infrastructure/repositories/productRepositoryImpl.ts)
+4. Create the use case (ie. src/application/use-cases/getProductUseCase.ts)
+5. Create the presenter (ie. src/interface-adapters/presenters/productPresenter.ts)
+6. Create the controller (ie. src/interface-adapters/controllers/productController.ts)
+7. Wire up the dependencies (ie. src/di/modules/productModule.ts, update to src/di/container.ts) 
+8. Create the page component (ie. src/app/v1/test/products/[id]/page.tsx)
+
+```
+ const productController = container.product.controller;
+  const product = await productController.getProduct(id);
+```
