@@ -1,5 +1,7 @@
 'use client';
 
+import { ProductDetail } from '@/components/modules/products/ProductDetail';
+import { ProductDetailWithUI } from '@/components/modules/products/ProductDetailWithUI';
 import { useProductQuery } from '@/interface-adapters/query/productQueries';
 
 export default function ProductPage({ params }: { params: { id: string } }) {
@@ -16,6 +18,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       <p>ID: {product.id}</p>
       <p>Name: {product.name}</p>
       <p>Price: {product.formattedPrice}</p>
+      <br />
+      <ProductDetail id={product.id} />
+      <ProductDetailWithUI id={product.id} />
     </div>
   );
 }
