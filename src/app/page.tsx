@@ -1,53 +1,27 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { GraduationCap, BookOpen, Users, CheckCircle, Search } from "lucide-react";
-
-
+import {
+  GraduationCap,
+  BookOpen,
+  Users,
+  CheckCircle,
+  Search,
+} from "lucide-react";
+import Header from "@/components/header";
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-gray-800 shadow-sm">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <Link className="flex items-center space-x-2" href="#">
-              <GraduationCap className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">LearnHub</span>
-            </Link>
-            <div className="hidden md:block flex-1 px-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-                <Input
-                  className="w-full pl-10 pr-4 py-2 rounded-full border-gray-300 focus:border-primary focus:ring-primary"
-                  placeholder="Search for anything"
-                  type="search"
-                />
-              </div>
-            </div>
-            <nav className="hidden md:flex items-center space-x-4">
-              <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary" href="#">
-                Courses
-              </Link>
-              <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary" href="#">
-                Pricing
-              </Link>
-              <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary" href="#">
-                About
-              </Link>
-              <Button variant="outline" className="ml-4">Log in</Button>
-              <Button>Sign up</Button>
-            </nav>
-            <button className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
-              <span className="sr-only">Open menu</span>
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header />
+
       <main className="flex-1">
         <section className="bg-gradient-to-r from-primary to-primary-dark text-white">
           <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -56,13 +30,22 @@ export default function LandingPage() {
                 Learn without limits
               </h1>
               <p className="mt-6 text-xl">
-                Start, switch, or advance your career with more than 5,000 courses, Professional Certificates, and degrees from world-class universities and companies.
+                Start, switch, or advance your career with more than 5,000
+                courses, Professional Certificates, and degrees from world-class
+                universities and companies.
               </p>
               <div className="mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                <Button size="lg" className="bg-white text-primary hover:bg-gray-100">
+                <Button
+                  size="lg"
+                  className="bg-white text-primary hover:bg-gray-100"
+                >
                   Join for Free
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-primary"
+                >
                   Try LearnHub Business
                 </Button>
               </div>
@@ -76,22 +59,45 @@ export default function LandingPage() {
             </h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
-                { title: "Web Development Bootcamp", description: "Learn full-stack web development", price: "$99.99", image: "https://source.unsplash.com/random/800x600?web", link: '/course-detail' },
-                { title: "Data Science Fundamentals", description: "Master the basics of data science", price: "$89.99", image: "https://source.unsplash.com/random/800x600?data", link: '/course-detail' },
-                { title: "Digital Marketing Mastery", description: "Become a digital marketing expert", price: "$79.99", image: "https://source.unsplash.com/random/800x600?marketing", link: '/course-detail' },
+                {
+                  title: "Web Development Bootcamp",
+                  description: "Learn full-stack web development",
+                  price: "$99.99",
+                  image: "https://source.unsplash.com/random/800x600?web",
+                  link: "/course-detail",
+                },
+                {
+                  title: "Data Science Fundamentals",
+                  description: "Master the basics of data science",
+                  price: "$89.99",
+                  image: "https://source.unsplash.com/random/800x600?data",
+                  link: "/course-detail",
+                },
+                {
+                  title: "Digital Marketing Mastery",
+                  description: "Become a digital marketing expert",
+                  price: "$79.99",
+                  image: "https://source.unsplash.com/random/800x600?marketing",
+                  link: "/course-detail",
+                },
               ].map((course, index) => (
                 <Card key={index} className="overflow-hidden">
-                  <img src={course.image} alt={course.title} className="h-48 w-full object-cover" />
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="h-48 w-full object-cover"
+                  />
                   <CardHeader>
                     <CardTitle className="text-xl">{course.title}</CardTitle>
                     <CardDescription>{course.description}</CardDescription>
                   </CardHeader>
                   <CardFooter className="flex justify-between items-center">
-                    <span className="text-2xl font-bold text-primary">{course.price}</span>
+                    <span className="text-2xl font-bold text-primary">
+                      {course.price}
+                    </span>
                     <Link href={course.link} className="text-primary">
                       <Button>Enroll Now</Button>
                     </Link>
-
                   </CardFooter>
                 </Card>
               ))}
@@ -105,14 +111,35 @@ export default function LandingPage() {
             </h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
-                { icon: BookOpen, title: "Wide Range of Courses", description: "Access thousands of courses in various subjects" },
-                { icon: Users, title: "Expert Instructors", description: "Learn from industry professionals and thought leaders" },
-                { icon: CheckCircle, title: "Flexible Learning", description: "Study at your own pace, anytime and anywhere" },
+                {
+                  icon: BookOpen,
+                  title: "Wide Range of Courses",
+                  description:
+                    "Access thousands of courses in various subjects",
+                },
+                {
+                  icon: Users,
+                  title: "Expert Instructors",
+                  description:
+                    "Learn from industry professionals and thought leaders",
+                },
+                {
+                  icon: CheckCircle,
+                  title: "Flexible Learning",
+                  description: "Study at your own pace, anytime and anywhere",
+                },
               ].map((feature, index) => (
-                <div key={index} className="flex flex-col items-center text-center bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+                <div
+                  key={index}
+                  className="flex flex-col items-center text-center bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md"
+                >
                   <feature.icon className="w-12 h-12 mb-4 text-primary" />
-                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {feature.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -125,17 +152,26 @@ export default function LandingPage() {
                 Start Your Learning Journey Today
               </h2>
               <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                Join millions of learners and transform your career with LearnHub.
+                Join millions of learners and transform your career with
+                LearnHub.
               </p>
               <div className="mt-8">
                 <form className="sm:flex justify-center">
-                  <Input type="email" placeholder="Enter your email" className="w-full sm:w-64" />
-                  <Button type="submit" className="mt-3 sm:mt-0 sm:ml-3 w-full sm:w-auto">
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full sm:w-64"
+                  />
+                  <Button
+                    type="submit"
+                    className="mt-3 sm:mt-0 sm:ml-3 w-full sm:w-auto"
+                  >
                     Get Started
                   </Button>
                 </form>
                 <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                  By signing up, you agree to our Terms of Service and Privacy Policy.
+                  By signing up, you agree to our Terms of Service and Privacy
+                  Policy.
                 </p>
               </div>
             </div>
@@ -146,35 +182,91 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">Company</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">
+                Company
+              </h3>
               <ul className="mt-4 space-y-2">
-                <li><Link className="text-gray-300 hover:text-white" href="#">About</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Careers</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Press</Link></li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Careers
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Press
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">Community</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">
+                Community
+              </h3>
               <ul className="mt-4 space-y-2">
-                <li><Link className="text-gray-300 hover:text-white" href="#">Learners</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Partners</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Developers</Link></li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Learners
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Partners
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Developers
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">Legal</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">
+                Legal
+              </h3>
               <ul className="mt-4 space-y-2">
-                <li><Link className="text-gray-300 hover:text-white" href="#">Privacy</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Terms</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Cookie Policy</Link></li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Privacy
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Terms
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Cookie Policy
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">Connect</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wider">
+                Connect
+              </h3>
               <ul className="mt-4 space-y-2">
-                <li><Link className="text-gray-300 hover:text-white" href="#">Facebook</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">Twitter</Link></li>
-                <li><Link className="text-gray-300 hover:text-white" href="#">LinkedIn</Link></li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Facebook
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    Twitter
+                  </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-300 hover:text-white" href="#">
+                    LinkedIn
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -186,5 +278,5 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
