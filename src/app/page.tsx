@@ -15,13 +15,10 @@ import {
   CheckCircle,
   Search,
 } from "lucide-react";
-import Header from "@/components/header";
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header />
-
       <main className="flex-1">
         <section className="bg-gradient-to-r from-primary to-primary-dark text-white">
           <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -35,12 +32,15 @@ export default function LandingPage() {
                 universities and companies.
               </p>
               <div className="mt-10 flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                <Button
-                  size="lg"
-                  className="bg-white text-primary hover:bg-gray-100"
-                >
-                  Join for Free
-                </Button>
+                <Link href="/auth/login">
+                  <Button
+                    size="lg"
+                    className="bg-white text-primary hover:bg-gray-100"
+                  >
+                    Join for Free
+                  </Button>
+                </Link>
+
                 <Button
                   size="lg"
                   variant="outline"

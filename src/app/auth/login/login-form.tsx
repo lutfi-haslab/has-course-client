@@ -30,6 +30,7 @@ export const LoginForm = () => {
   const onSubmitHandler: SubmitHandler<LoginUserInput> = async (values) => {
     startTransition(async () => {
       const result = await signInWithEmailAndPassword(values);
+      
 
       const { error } = JSON.parse(result);
       if (error?.message) {
@@ -42,7 +43,7 @@ export const LoginForm = () => {
 
       setError("");
       toast.success("successfully logged in");
-      router.push("/");
+      router.push("/courses");
     });
   };
 

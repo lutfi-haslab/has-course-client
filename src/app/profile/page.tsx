@@ -1,11 +1,9 @@
-import Header from "@/components/header";
+import HeaderClient from "@/components/layout/HeaderClient";
 import { getUserSession } from "@/lib/getUserSession";
 import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
-  const {
-    data: { session },
-  } = await getUserSession();
+  const { session } = await getUserSession();
 
   if (!session) {
     return redirect("/auth/login");
@@ -15,7 +13,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <Header />
+      <HeaderClient session={session} />
       <section className="bg-ct-blue-600  min-h-screen pt-20">
         <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md h-[20rem] flex justify-center items-center">
           <div>

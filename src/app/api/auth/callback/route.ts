@@ -1,14 +1,14 @@
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
-import { type CookieOptions, createServerClient } from '@supabase/ssr';
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { type CookieOptions, createServerClient } from "@supabase/ssr";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/';
+  const code = searchParams.get("code");
+  const next = searchParams.get("next") ?? "/courses";
 
   if (code) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -27,8 +27,30 @@ export async function GET(request: Request) {
         },
       }
     );
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error && data?.session) {
+      const { access_token, refresh_token, expires_at } = data.session;
+      console.log("access_token", access_token);
+      console.log("refresh_token", refresh_token);
+
+      cookieStore.set({
+        name: "access_token",
+        value: access_token,
+        httpOnly: true,
+        path: "/",
+        secure: true,
+        ...(expires_at && { expires: new Date(expires_at) }),
+      });
+
+      cookieStore.set({
+        name: "refresh_token",
+        value: refresh_token,
+        httpOnly: true,
+        path: "/",
+        secure: true,
+        ...(expires_at && { expires: new Date(expires_at) }),
+      });
+
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

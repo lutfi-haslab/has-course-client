@@ -37,16 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Step-by-step guide to create a new page:
 
-1. Define the entity (ie. src/entities/models/product.ts)
-2. Create the repository interface (ie. src/application/repositories/productRepository.ts)
-3. Implement the repository (ie. src/infrastructure/repositories/productRepositoryImpl.ts)
-4. Create the use case (ie. src/application/use-cases/getProductUseCase.ts)
-5. Create the presenter (ie. src/interface-adapters/presenters/productPresenter.ts)
-6. Create the controller (ie. src/interface-adapters/controllers/productController.ts)
-7. Wire up the dependencies (ie. src/di/modules/productModule.ts, update to src/di/container.ts) 
-8. Create the page component (ie. src/app/v1/test/products/[id]/page.tsx)
-
-```
- const productController = container.product.controller;
-  const product = await productController.getProduct(id);
-```
+1. Create Entity
+2. Create Repository
+3. Create UseCase
+4. Create Presenter each page / group routes with _usePresenter hook

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "apiDoc HasCourses",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
