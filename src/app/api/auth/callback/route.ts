@@ -4,7 +4,14 @@ import { type CookieOptions, createServerClient } from "@supabase/ssr";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const origin = process.env.NEXT_PUBLIC_BASE_URL;
+  let origin = "";
+  if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") {
+    origin = "https://has-course-client.vercel.app";
+  } else {
+    origin = "http://localhost:3000";
+  }
+  // const origin = process.env.NEXT_PUBLIC_BASE_URL;
+
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/courses";
 
