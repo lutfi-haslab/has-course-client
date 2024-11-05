@@ -1,0 +1,45 @@
+meta {
+  name: create
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/v1/course
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user_uuid": "e1f5bd96-cf78-4361-b533-6eaf93ef7253",
+    "title": "test create nextjs",
+    "description": "string",
+    "rating": 0,
+    "total_reviews": 0,
+    "total_enrolled": 0,
+    "tags": [
+      "string"
+    ],
+    "checklist": [
+      "string"
+    ]
+  }
+}
+
+docs {
+  Partial:
+  export const CourseSchema = z.object({
+    id: z.string().optional(), // UUID
+    user_uuid: z.string(),
+    title: z.string().max(255),
+    description: z.string().nullable(),
+    rating: z.number().nullable(),
+    total_reviews: z.number().default(0),
+    total_enrolled: z.number().default(0),
+    tags: z.array(z.string()).nullable(),
+    checklist: z.array(z.string()).nullable(),
+    created_at: z.string().default("2024-09-25T18:23:27.906+00:00"),
+    updated_at: z.string().default("2024-09-25T18:23:27.906+00:00"),
+  });
+}
