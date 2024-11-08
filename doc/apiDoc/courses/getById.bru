@@ -5,7 +5,16 @@ meta {
 }
 
 get {
-  url: {{base_url}}/api/v1/course/ec78856e-8032-474d-b6b6-ea02c88bdf6d
+  url: {{base_url}}/api/v1/course/:id?with_content=true&full_content=false
   body: none
   auth: none
+}
+
+params:query {
+  with_content: true
+  full_content: false
+}
+
+params:path {
+  id: c2e73ceb-8afe-4afa-892e-1fafd9ffbf9d
 }

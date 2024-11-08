@@ -22,10 +22,11 @@ export const SectionSchema = z.object({
   title: z.string().max(255),
   order_num: z.number(),
   created_at: z.string().default("2024-09-25T18:23:27.906+00:00"),
-  updated_at: z.string().default("2024-09-25T18:23:27.906+00:00"),
+  updated_at: z.string().default("2024-09-25T18:23:27.906+00:00")
 });
 
 export type Section = z.infer<typeof SectionSchema>;
+
 
 export const LessonSchema = z.object({
   id: z.string().optional(), // UUID
@@ -40,7 +41,7 @@ export const LessonSchema = z.object({
   description: z.string().nullable(),
   order_num: z.number(),
   created_at: z.string().default("2024-09-25T18:23:27.906+00:00"),
-  updated_at: z.string().default("2024-09-25T18:23:27.906+00:00"),
+  updated_at: z.string().default("2024-09-25T18:23:27.906+00:00")
 });
 
 export type Lesson = z.infer<typeof LessonSchema>;

@@ -1,4 +1,4 @@
-import { CoursesService } from "@/services/courseServices";
+import { CoursesService } from "@/services/coursesServices";
 
 export async function GET(
   req: Request,
@@ -9,8 +9,21 @@ export async function GET(
   }
 ) {
   const { id } = await params;
+  const url = new URL(req.url);
+  const withContent = url.searchParams.get("with_content");
+  const fullContent = url.searchParams.get("full_content");
+  let data;
   const service = await CoursesService();
-  const data = await service.getCourse(id);
+
+  if (withContent === "true") {
+    if (fullContent === "true") {
+      data = await service.getAllCoursesWithContent(id, true);
+    } else {
+      data = await service.getAllCoursesWithContent(id, false);
+    }
+  } else {
+    data = await service.getCourse(id);
+  }
 
   return Response.json({
     code: 200,

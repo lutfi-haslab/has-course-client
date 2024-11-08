@@ -1,0 +1,28 @@
+meta {
+  name: create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/v1/enrollment
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user_uuid": "83a504a2-c247-4d68-b4fa-91e2d943ac98",
+      "course_id": "324082f6-d6f1-4811-8507-3d905e4f9e63"
+  }
+}
+
+docs {
+  type CourseEnrollment = {
+      user_uuid: string;
+      course_id: string;
+      enrolled_at: string;
+      completed_at: string | null;
+      id?: string | undefined;
+  }
+}

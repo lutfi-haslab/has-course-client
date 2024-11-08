@@ -30,7 +30,6 @@ export const LoginForm = () => {
   const onSubmitHandler: SubmitHandler<LoginUserInput> = async (values) => {
     startTransition(async () => {
       const result = await signInWithEmailAndPassword(values);
-      
 
       const { error } = JSON.parse(result);
       if (error?.message) {
@@ -51,16 +50,29 @@ export const LoginForm = () => {
     supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: `${location.origin}/api/auth/callback`,
+        redirectTo: `${window.location.origin}/api/auth/callback`,
       },
     });
+  };
+
+  const getURL = () => {
+    let url =
+      process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+      process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+      "http://localhost:3000/";
+    // Make sure to include `https://` when not localhost.
+    url = url.startsWith("http") ? url : `https://${url}`;
+    // Make sure to include a trailing `/`.
+    url = url.endsWith("/") ? url : `${url}/`;
+    return url;
   };
 
   const loginWithGoogle = () => {
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${location.origin}/api/auth/callback`,
+        // redirectTo: getURL() + "api/auth/callback",
+        redirectTo: `${window.location.origin}` + "/api/auth/callback",
       },
     });
   };

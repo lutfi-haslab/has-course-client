@@ -1,31 +1,21 @@
 meta {
   name: create
   type: http
-  seq: 4
+  seq: 1
 }
 
 post {
-  url: {{base_url}}/api/v1/course
+  url: {{base_url}}/api/v1/author
   body: json
   auth: none
 }
 
 body:json {
   {
-    "author_id": "ac024607-576f-4d06-bda4-d36151f6e4d1",
-    "title": "Back End Development Bootcamp",
-    "description": "Master the art of web development with our comprehensive bootcamp. Learn everything from HTML and CSS to advanced JavaScript and React.",
-    "tags": [
-      "webdev","react","javascript"
-    ],
-    "checklist": [
-      "Build modern, responsive websites",
-      "Work with APIs and databases",
-      "Master JavaScript and React",
-      "Deploy your applications to the web"
-    ]
-    // "price": 0,
-    // "currency": "IDR"
+    "user_id": "83a504a2-c247-4d68-b4fa-91e2d943ac98",
+    "is_org": false,
+    "bio": "Full Stack Developer",
+    "org_name": ""
   }
 }
 
