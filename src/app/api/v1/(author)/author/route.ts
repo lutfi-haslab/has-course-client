@@ -1,9 +1,9 @@
+import { AuthorService } from "@/application/services/authorsService";
 import { AuthorSchema } from "@/entities/models";
-import { AuthorsService } from "@/services/authorsService";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {
-  const service = await AuthorsService();
+  const service = await AuthorService.create();
   const body = (await req.json()) as TypeOf<typeof AuthorSchema>;
 
   try {

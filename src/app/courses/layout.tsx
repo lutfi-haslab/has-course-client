@@ -1,13 +1,18 @@
-"use client"
+"use client";
 import HeaderClient from "@/components/layout/HeaderClient";
 import React from "react";
 import useCoursesPresenter from "./_useCoursesPresenter";
+import useRootPresenter from "../_useRootPresenter";
+import Loader from "@/components/shares/Loader";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  const { session } = useCoursesPresenter();
+  const { state, actions } = useRootPresenter();
+  if (state.loader.session || state.loader.user) {
+    return <Loader />;
+  }
   return (
     <div>
-      <HeaderClient session={session} />
+      <HeaderClient  />
       <React.Fragment>{children}</React.Fragment>
     </div>
   );

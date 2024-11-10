@@ -1,10 +1,9 @@
+import { CourseService } from "@/application/services/coursesServices";
 import { CourseSchema } from "@/entities/models";
-import { CoursesService } from "@/services/coursesServices";
-import { PostgrestError } from "@supabase/supabase-js";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {
-  const service = await CoursesService();
+  const service = await CourseService.create();
   const body = (await req.json()) as TypeOf<typeof CourseSchema>;
 
   try {

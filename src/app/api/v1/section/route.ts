@@ -1,5 +1,5 @@
 import { SectionSchema } from "@/entities/models";
-import { SectionsService } from "@/services/sectionsService";
+import { SectionsService } from "@/application/services/sectionsService";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {

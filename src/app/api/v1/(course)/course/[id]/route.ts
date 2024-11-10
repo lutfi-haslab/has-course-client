@@ -1,4 +1,4 @@
-import { CoursesService } from "@/services/coursesServices";
+import { CourseService } from "@/application/services/coursesServices";
 
 export async function GET(
   req: Request,
@@ -13,7 +13,7 @@ export async function GET(
   const withContent = url.searchParams.get("with_content");
   const fullContent = url.searchParams.get("full_content");
   let data;
-  const service = await CoursesService();
+  const service = await CourseService.create();
 
   if (withContent === "true") {
     if (fullContent === "true") {
@@ -42,7 +42,7 @@ export async function PUT(
   }
 ) {
   const { id } = await params;
-  const service = await CoursesService();
+  const service = await CourseService.create();
   const body = await req.json();
 
   try {

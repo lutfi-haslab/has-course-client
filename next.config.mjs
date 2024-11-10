@@ -1,5 +1,4 @@
 import { withSentryConfig } from '@sentry/nextjs';
-import { withPayload } from '@payloadcms/next/withPayload';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,7 +14,7 @@ const payloadConfig = {
   serverURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000',
 };
 
-export default withSentryConfig(withPayload(nextConfig, payloadConfig), {
+export default withSentryConfig(nextConfig, {
   org: "haslab",
   project: "has-course-client",
 

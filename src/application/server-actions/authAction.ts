@@ -1,6 +1,7 @@
 "use server";
 
 import createSupabaseServerClient from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const logoutAction = async () => {
@@ -11,6 +12,7 @@ export const logoutAction = async () => {
     console.log("Error", logOut.error);
   } else {
     console.log("Logged out successfully");
+    revalidatePath("/");
     return redirect("/");
   }
 };

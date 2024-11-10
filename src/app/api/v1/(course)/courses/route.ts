@@ -1,9 +1,9 @@
-import { CoursesService } from "@/services/coursesServices";
+import { CourseService } from "@/application/services/coursesServices";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const authorId = url.searchParams.get("author_id");
-  const service = await CoursesService();
+  const service = await CourseService.create();
   let data;
 
   if (authorId) {
@@ -11,8 +11,6 @@ export async function GET(req: Request) {
   } else {
     data = await service.getCourses();
   }
-
-  console.log("data", data);
 
   return Response.json({
     code: 200,

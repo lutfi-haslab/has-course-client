@@ -1,5 +1,5 @@
 import { EnrollmentSchema } from "@/entities/models";
-import { EnrollmentsService } from "@/services/enrollmentsService";
+import { EnrollmentsService } from "@/application/services/enrollmentsService";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {

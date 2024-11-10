@@ -1,5 +1,5 @@
 import { LessonSchema } from "@/entities/models";
-import { LessonsService } from "@/services/lessonsService";
+import { LessonsService } from "@/application/services/lessonsService";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {

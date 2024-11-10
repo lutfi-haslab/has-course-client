@@ -11,5 +11,6 @@ export async function getUserSession() {
 
 export async function getUser() {
   const supabase = await createSupabaseServerClient();
-  return supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
+  return data;
 }

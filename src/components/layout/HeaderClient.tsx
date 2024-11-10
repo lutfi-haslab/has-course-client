@@ -1,14 +1,14 @@
 "use client";
 
-import { logoutAction } from "@/application/server-actions/authAction";
+import useRootPresenter from "@/app/_useRootPresenter";
 import { GraduationCap, Search } from "lucide-react";
 import Link from "next/link";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { getUserSession } from "@/lib/getUserSession";
-import { Session } from "@supabase/supabase-js";
+import { Input } from "../ui/input";
 
-const HeaderClient = ({ session }: { session: Session }) => {
+const HeaderClient = () => {
+  const { state, actions } = useRootPresenter();
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-gray-800 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,32 +32,25 @@ const HeaderClient = ({ session }: { session: Session }) => {
           <nav className="hidden md:flex items-center space-x-4">
             <Link
               className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary"
-              href="#"
+              href="/courses"
             >
               Courses
             </Link>
-            <Link
-              className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary"
-              href="#"
-            >
-              Pricing
-            </Link>
-            <Link
-              className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-200 dark:hover:text-primary"
-              href="#"
-            >
-              About
-            </Link>
 
-            {session ? (
-              <form action={logoutAction} className="flex space-x-4">
+            {state.session ? (
+              <div className="flex space-x-4">
                 <Link href="/profile" className="text-ct-dark-600">
                   <Button variant="outline" className="ml-4">
                     Profile
                   </Button>
                 </Link>
-                <Button className="bg-red-500 hover:bg-red-800">Logout</Button>
-              </form>
+                <Button
+                  className="bg-red-500 hover:bg-red-800"
+                  onClick={actions.logOut}
+                >
+                  Logout
+                </Button>
+              </div>
             ) : (
               <>
                 <Link href="/auth/login" className="text-ct-dark-600">

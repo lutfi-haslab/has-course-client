@@ -1,14 +1,17 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React from "react";
 import useCoursesPresenter from "./_useCoursesPresenter";
+import Loader from "@/components/shares/Loader";
 
 const HomeCourses = () => {
-  const { todo } = useCoursesPresenter();
+  const { state } = useCoursesPresenter();
+
+
   return (
     <div className="bg-gray-100 min-h-screen py-10">
       <div className="container mx-auto px-4">
-        {todo?.todo}
+        {state.todo?.todo}
         <h1 className="text-3xl font-bold text-center mb-8">My Courses</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((course) => (

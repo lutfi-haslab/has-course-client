@@ -1,24 +1,24 @@
+"use client";
+import HeaderClient from "@/components/layout/HeaderClient";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardDescription,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import {
-  GraduationCap,
-  BookOpen,
-  Users,
-  CheckCircle,
-  Search,
-} from "lucide-react";
+import { BookOpen, CheckCircle, Users } from "lucide-react";
+import Link from "next/link";
+import useRootPresenter from "./_useRootPresenter";
 
 export default function LandingPage() {
+  const { state, actions } = useRootPresenter();
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
+      <HeaderClient />
       <main className="flex-1">
         <section className="bg-gradient-to-r from-primary to-primary-dark text-white">
           <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">

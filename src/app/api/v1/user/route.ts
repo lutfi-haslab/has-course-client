@@ -1,5 +1,5 @@
 import { UserSchema } from "@/entities/models";
-import { UsersService } from "@/services/usersService";
+import { UsersService } from "@/application/services/usersService";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {

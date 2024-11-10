@@ -5,11 +5,14 @@ meta {
 }
 
 get {
-  url: {{base_url}}/api/v1/courses
+  url: {{base_url}}/api/v1/courses?author_id=ac024607-576f-4d06-bda4-d36151f6e4d1&order=asc&page=1&limit=2
   body: none
   auth: none
 }
 
 params:query {
-  ~author_id: ac024607-576f-4d06-bda4-d36151f6e4d1
+  author_id: ac024607-576f-4d06-bda4-d36151f6e4d1
+  order: asc
+  page: 1
+  limit: 2
 }

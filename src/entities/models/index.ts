@@ -18,6 +18,7 @@ export const UserSchema = z.object({
 export const AuthorSchema = z.object({
   id: z.string().uuid(),
   user_id: z.string().uuid(),
+  name: z.string().min(1),
   bio: z.string().optional(),
   is_org: z.boolean(),
   org_name: z.string().optional(),
@@ -32,10 +33,29 @@ export const CourseSchema = z.object({
   title: z.string().min(1),
   description: z.string(),
   tags: z.array(z.string()).optional(),
+  checklist: z.array(z.string()).optional(),
   price: z.number().nonnegative(),
   currency: z.string(),
+  banner_img: z.string().url(),
   created_at: z.string(), // Timestamptz in ISO format
   updated_at: z.string(), // Timestamptz in ISO format
+});
+
+export const CourseSchemaWithContent = CourseSchema.extend({
+  Section: z.array(
+    z.object({
+      id: z.string().uuid(),
+      title: z.string().min(1),
+      Lesson: z.array(
+        z.object({
+          id: z.string().uuid(),
+          title: z.string().min(1),
+          created_at: z.string(), // Timestamptz in ISO format
+        })
+      ),
+      created_at: z.string(), // Timestamptz in ISO format
+    })
+  ),
 });
 
 // CourseCategory schema
