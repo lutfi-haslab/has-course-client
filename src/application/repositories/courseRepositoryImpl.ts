@@ -1,29 +1,44 @@
+import {
+  CourseSchema,
+  CourseSchemaWithContent,
+  CourseSchemaWithContentFull,
+} from "@/entities/models";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { CourseSchema } from "@/entities/models";
 import { z } from "zod";
 
 export interface CourseRepository {
-  createCourse(data: z.infer<typeof CourseSchema>): Promise<any>;
-  getCourse(id: string): Promise<any>;
-  getCourses(): Promise<any>;
-  getCoursesByAuthorId(authorId: string): Promise<any>;
-  getAllCoursesWithContent(id: string, fullContent: boolean): Promise<any>;
+  createCourse(data: Course): Promise<Course>;
+  getCourse(id: string): Promise<Course>;
+  getCourses(): Promise<Course[]>;
+  getCoursesByAuthorId(authorId: string): Promise<Course[]>;
+  getAllCoursesWithContent(
+    id: string,
+    fullContent: boolean
+  ): Promise<CourseWithContent[] | CourseWithContentFull[]>;
   updateCourse(
     id: string,
     data: Partial<z.infer<typeof CourseSchema>>
-  ): Promise<any>;
+  ): Promise<Course>;
 }
+
+export type Course = z.infer<typeof CourseSchema>;
+export type CourseWithContent = z.infer<typeof CourseSchemaWithContent>;
+export type CourseWithContentFull = z.infer<typeof CourseSchemaWithContentFull>;
+export type CourseDTO = Omit<
+  z.infer<typeof CourseSchema>,
+  "id" | "created_at" | "updated_at"
+>;
 
 export class CourseRepositoryImpl implements CourseRepository {
   constructor(private client: SupabaseClient) {}
 
-  async createCourse(data: z.infer<typeof CourseSchema>): Promise<any> {
+  async createCourse(data: CourseDTO) {
     const response = await this.client.from("Course").insert(data).single();
     if (response.error) throw new Error(response.error.message);
     return response.data;
   }
 
-  async getCourse(id: string): Promise<any> {
+  async getCourse(id: string) {
     const response = await this.client
       .from("Course")
       .select("*")
@@ -62,7 +77,7 @@ export class CourseRepositoryImpl implements CourseRepository {
     page = 1,
     limit = 10,
     order = "asc"
-  ): Promise<any> {
+  ): Promise<CourseWithContent[]> {
     const offset = (page - 1) * limit;
     let response;
     if (fullContent) {
@@ -71,7 +86,8 @@ export class CourseRepositoryImpl implements CourseRepository {
         .select("*, Section(*, Lesson(*))")
         .eq("id", id)
         .range(offset, offset + limit - 1)
-        .order("created_at", { ascending: order === order });
+        .order("created_at", { ascending: order === order })
+        .single();
     } else {
       response = await this.client
         .from("Course")
@@ -80,16 +96,14 @@ export class CourseRepositoryImpl implements CourseRepository {
         )
         .eq("id", id)
         .range(offset, offset + limit - 1)
-        .order("created_at", { ascending: order === order });
+        .order("created_at", { ascending: order === order })
+        .single();
     }
     if (response.error) throw new Error(response.error.message);
     return response.data;
   }
 
-  async updateCourse(
-    id: string,
-    data: Partial<z.infer<typeof CourseSchema>>
-  ): Promise<any> {
+  async updateCourse(id: string, data: Partial<Course>): Promise<any> {
     const response = await this.client
       .from("Course")
       .update(data)

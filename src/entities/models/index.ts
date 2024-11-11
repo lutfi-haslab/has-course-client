@@ -1,3 +1,4 @@
+import { Section } from "lucide-react";
 import { z } from "zod";
 
 // User schema
@@ -17,7 +18,7 @@ export const UserSchema = z.object({
 // Author schema
 export const AuthorSchema = z.object({
   id: z.string().uuid(),
-  user_id: z.string().uuid(),
+  user_id: z.string().uuid().optional(),
   name: z.string().min(1),
   bio: z.string().optional(),
   is_org: z.boolean(),
@@ -29,7 +30,7 @@ export const AuthorSchema = z.object({
 // Course schema
 export const CourseSchema = z.object({
   id: z.string().uuid(),
-  author_id: z.string().uuid(),
+  author_id: z.string().uuid().optional(),
   title: z.string().min(1),
   description: z.string(),
   tags: z.array(z.string()).optional(),
@@ -39,23 +40,6 @@ export const CourseSchema = z.object({
   banner_img: z.string().url(),
   created_at: z.string(), // Timestamptz in ISO format
   updated_at: z.string(), // Timestamptz in ISO format
-});
-
-export const CourseSchemaWithContent = CourseSchema.extend({
-  Section: z.array(
-    z.object({
-      id: z.string().uuid(),
-      title: z.string().min(1),
-      Lesson: z.array(
-        z.object({
-          id: z.string().uuid(),
-          title: z.string().min(1),
-          created_at: z.string(), // Timestamptz in ISO format
-        })
-      ),
-      created_at: z.string(), // Timestamptz in ISO format
-    })
-  ),
 });
 
 // CourseCategory schema
@@ -81,7 +65,6 @@ export const SectionSchema = z.object({
   course_id: z.string().uuid(),
   title: z.string().min(1),
   description: z.string().optional(),
-  order: z.number().int().nonnegative(),
   created_at: z.string(), // Timestamptz in ISO format
   updated_at: z.string(), // Timestamptz in ISO format
 });
@@ -206,4 +189,26 @@ export const CertificateSchema = z.object({
   issue_date: z.string(), // Timestamptz in ISO format
   created_at: z.string(), // Timestamptz in ISO format
   updated_at: z.string(), // Timestamptz in ISO format
+});
+
+export const CourseSchemaWithContent = CourseSchema.extend({
+  Section: z.array(
+    z.object({
+      id: z.string().uuid(),
+      title: z.string().min(1),
+      Lesson: z.array(
+        z.object({
+          id: z.string().uuid(),
+          title: z.string().min(1),
+          created_at: z.string(), // Timestamptz in ISO format
+        })
+      ),
+      created_at: z.string(), // Timestamptz in ISO format
+    })
+  ),
+});
+
+export const CourseSchemaWithContentFull = CourseSchema.extend({
+  Section: z.array(SectionSchema),
+  Lesson: z.array(LessonSchema),
 });

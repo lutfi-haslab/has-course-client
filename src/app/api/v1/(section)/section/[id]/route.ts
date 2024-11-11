@@ -1,21 +1,22 @@
-import { Lesson } from "@/entities/models/course";
-import { LessonsService } from "@/services/courseLessonServices";
+import { SectionService } from "@/application/services/sectionsService";
+import { Section } from "@/entities/models/course";
 
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const service = await LessonsService();
+  const service = await SectionService.create();
+  const body = (await req.json()) as Section;
 
   try {
-    const getData = await service.getLesson(id);
+    const getData = await service.getSection(id);
 
     return Response.json({
       code: 200,
       status: "success",
       data: getData,
-      messages: "Lesson Section fetched successfully",
+      messages: "Section Course fetched successfully",
     });
   } catch (error) {
     return Response.json({
@@ -31,17 +32,17 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const service = await LessonsService();
-  const body = (await req.json()) as Partial<Lesson>;
+  const service = await SectionService.create();
+  const body = (await req.json()) as Partial<Section>;
 
   try {
-    const getData = await service.updateLesson(id, body);
+    const getData = await service.updateSection(id, body);
 
     return Response.json({
       code: 201,
       status: "success",
       data: getData,
-      messages: "Lesson Section updated successfully",
+      messages: "Section Course updated successfully",
     });
   } catch (error) {
     return Response.json({

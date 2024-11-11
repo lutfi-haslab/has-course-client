@@ -18,12 +18,12 @@ export interface AuthorRepository {
     limit?: number,
     order?: string
   ): Promise<BaseResponse<Author[]>>;
-  createAuthor(data: CreateAuthorDTO): Promise<Author>;
-  updateAuthor(id: string, data: Partial<CreateAuthorDTO>): Promise<Author>;
+  createAuthor(data: AuthorDTO): Promise<Author>;
+  updateAuthor(id: string, data: Partial<AuthorDTO>): Promise<Author>;
 }
 
 export type Author = z.infer<typeof AuthorSchema>;
-export type CreateAuthorDTO = Omit<Author, "id">;
+export type AuthorDTO = Omit<Author, "id" | "created_at" | "updated_at">;
 
 // Repository implementation
 export class AuthorRepositoryImpl implements AuthorRepository {
@@ -82,17 +82,14 @@ export class AuthorRepositoryImpl implements AuthorRepository {
     };
   }
 
-  async createAuthor(data: CreateAuthorDTO): Promise<Author> {
+  async createAuthor(data: AuthorDTO): Promise<Author> {
     const response = await this.client.from("Author").insert(data).single();
 
     if (response.error) throw new Error(response.error.message);
     return response.data;
   }
 
-  async updateAuthor(
-    id: string,
-    data: Partial<CreateAuthorDTO>
-  ): Promise<Author> {
+  async updateAuthor(id: string, data: Partial<AuthorDTO>): Promise<Author> {
     const response = await this.client
       .from("Author")
       .update(data)

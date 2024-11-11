@@ -1,9 +1,9 @@
 "use client";
 import HeaderClient from "@/components/layout/HeaderClient";
-import React from "react";
-import useCoursesPresenter from "./_useCoursesPresenter";
-import useRootPresenter from "../_useRootPresenter";
 import Loader from "@/components/shares/Loader";
+import React from "react";
+import useRootPresenter from "../_useRootPresenter";
+import { CourseProvider } from "./(context)/_useCourse";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   const { state, actions } = useRootPresenter();
@@ -11,10 +11,12 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     return <Loader />;
   }
   return (
-    <div>
-      <HeaderClient  />
-      <React.Fragment>{children}</React.Fragment>
-    </div>
+    <CourseProvider>
+      <div>
+        <HeaderClient />
+        <React.Fragment>{children}</React.Fragment>
+      </div>
+    </CourseProvider>
   );
 };
 

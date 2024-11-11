@@ -1,19 +1,19 @@
-import { LessonSchema } from "@/entities/models";
-import { LessonsService } from "@/application/services/lessonsService";
+import { SectionService } from "@/application/services/sectionsService";
+import { SectionSchema } from "@/entities/models";
 import { TypeOf } from "zod";
 
 export async function POST(req: Request) {
-  const service = await LessonsService();
-  const body = (await req.json()) as TypeOf<typeof LessonSchema>;
+  const service = await SectionService.create();
+  const body = (await req.json()) as TypeOf<typeof SectionSchema>;
 
   try {
-    const data = await service.createLesson(body);
+    const data = await service.createSection(body);
 
     return Response.json({
       code: 201,
       status: "success",
       data,
-      message: "Lesson created successfully",
+      message: "Section created successfully",
     });
   } catch (error: any) {
     const errorMessage = JSON.parse(error?.message);

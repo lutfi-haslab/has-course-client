@@ -1,89 +1,33 @@
-// hooks/mutations/authorMutations.ts
-import { AuthorSchema, CourseSchema } from "@/entities/models";
-import { useMutation } from "@tanstack/react-query";
+import { AuthorSchema } from "@/entities/models";
+import { api } from "@/lib/network";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
+import { AddEntityResponse } from "../type";
+import { Author, AuthorDTO } from "@/application/repositories/authorRepositoryImpl";
 
-interface Author {
-  id: string;
-  user_id: string;
-  bio: string;
-  is_org: boolean;
-  org_name: string;
-  name: string;
-}
+type IResponse = AddEntityResponse<Author>;
 
-interface Course {
-  id: string;
-  author_id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  price: number;
-  currency: string;
-  checklist: string[];
-}
+export const mutateAuthor = () => {
+  return {
+    addAuthor: async (data: AuthorDTO) => {
+      const response = await api.post<IResponse>(
+        "api/v1/author",
+        data,
+      );
 
-interface AddAuthorResponse {
-  code: number;
-  status: string;
-  message: string;
-  data: Author;
-}
-
-interface AddCourseResponse {
-  code: number;
-  status: string;
-  message: string;
-  data: Course;
-}
-
-export type AuthorDTO = Omit<
-  z.infer<typeof AuthorSchema>,
-  "id" | "user_id" | "created_at" | "updated_at"
->;
-export type CourseDTO = Omit<
-  z.infer<typeof CourseSchema>,
-  "id" | "author_id" | "created_at" | "updated_at"
->;
-
-export const useAddAuthor = () => {
-  return useMutation<AddAuthorResponse, Error, AuthorDTO>({
-    mutationFn: async (data) => {
-      const response = await fetch('http://localhost:3000/api/v1/author', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to add author');
-      }
-      
-      return response.json();
+      return response.data;
     },
-  });
+  };
 };
 
-export const useAddCourse = () => {
-  return useMutation<AddCourseResponse, Error, CourseDTO>({
-    mutationFn: async (data) => {
-      const response = await fetch('http://localhost:3000/api/v1/course', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+export const useAddAuthor = () => {
+  const queryClient = useQueryClient();
+  return useMutation<IResponse, Error, AuthorDTO>({
+    mutationFn: async (data) => await mutateAuthor().addAuthor(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["authorsByUserId", data.data.user_id],
       });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to add course');
-      }
-      
-      return response.json();
     },
   });
 };

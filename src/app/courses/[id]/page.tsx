@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
@@ -12,16 +11,27 @@ import {
   Award,
   BookOpen,
   Clock,
-  GraduationCap,
-  Search,
-  Star,
-  PlayCircle,
   Download,
+  PlayCircle,
+  Star,
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { useCourse } from "../(context)/_useCourse";
+import { use, useEffect } from "react";
+import { useGetCourseById } from "@/hooks/queries/courseQueries";
+import Loader from "@/components/shares/Loader";
 
-export default function CourseDetail() {
+export default function CourseDetail(
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = use(params);
+  const { state, actions } = useCourse();
+
+  useEffect(() => {
+    actions.setCourseId(id);
+  }, [id]);
+
   const courseContent = [
     {
       section: "Introduction to Web Development",
@@ -61,15 +71,16 @@ export default function CourseDetail() {
     },
   ];
 
+  if (state.isLoading.courses) return <Loader />;
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Course Hero Section */}
       <div className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Web Development Bootcamp</h1>
+          <h1 className="text-4xl font-bold mb-4">{state.courseById?.title}</h1>
           <p className="text-xl mb-6">
-            Master the art of web development with our comprehensive bootcamp.
-            Learn everything from HTML and CSS to advanced JavaScript and React.
+            {state.courseById?.description}
           </p>
           <div className="flex flex-wrap items-center gap-4 mb-6 text-sm">
             <div className="flex items-center">
@@ -113,12 +124,7 @@ export default function CourseDetail() {
               </CardHeader>
               <CardContent>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    "Build modern, responsive websites",
-                    "Master JavaScript and React",
-                    "Work with APIs and databases",
-                    "Deploy your applications to the web",
-                  ].map((item, index) => (
+                  {state.courseById?.checklist?.map((item, index) => (
                     <li key={index} className="flex items-start">
                       <svg
                         className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"
@@ -132,7 +138,8 @@ export default function CourseDetail() {
                           strokeLinejoin="round"
                           strokeWidth="2"
                           d="M5 13l4 4L19 7"
-                        ></path>
+                        >
+                        </path>
                       </svg>
                       <span>{item}</span>
                     </li>
@@ -143,7 +150,7 @@ export default function CourseDetail() {
 
             <h2 className="text-2xl font-semibold mb-4">Course Content</h2>
             <Accordion type="single" collapsible className="w-full">
-              {courseContent.map((section, index) => (
+              {state.courseById?.Section?.map((section, index) => (
                 <AccordionItem
                   value={`section-${index}`}
                   key={index}
@@ -151,18 +158,18 @@ export default function CourseDetail() {
                 >
                   <AccordionTrigger className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800">
                     <div className="flex justify-between items-center w-full">
-                      <span className="font-semibold">{section.section}</span>
+                      <span className="font-semibold">{section.title}</span>
                       <span className="text-sm text-gray-500">
-                        {section.lessons.length} lessons
+                        {section.Lesson?.length} lessons
                       </span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-4 py-2 bg-gray-50 dark:bg-gray-800">
                     <ul className="space-y-2">
-                      {section.lessons.map((lesson, lessonIndex) => (
+                      {section.Lesson?.map((lesson, lessonIndex) => (
                         <li key={lessonIndex} className="flex items-center">
                           <PlayCircle className="w-4 h-4 mr-2 text-gray-400" />
-                          <span>{lesson}</span>
+                          <span>{lesson.title}</span>
                         </li>
                       ))}
                     </ul>

@@ -1,0 +1,44 @@
+meta {
+  name: getAll
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/v1/lessons?section_id=6725736a-427b-4133-9ba8-fa99205257bc
+  body: json
+  auth: none
+}
+
+params:query {
+  section_id: 6725736a-427b-4133-9ba8-fa99205257bc
+}
+
+body:json {
+  {
+    "title": "What is React?",
+    "description": "Introduction to React",
+    "type": "video",
+    "section_id": "6725736a-427b-4133-9ba8-fa99205257bc",
+    "duration": 10,
+    "content_url": "https://www.youtube.com/watch?v=Tn6-PIqc4UM"
+  }
+}
+
+docs {
+  type Lesson = {
+      title: string;
+      description: string | null;
+      type: "video" | "pdf" | "blog";
+      created_at: string;
+      updated_at: string;
+      order_num: number;
+      section_id: string;
+      minutes: number | null;
+      url_doc: string | null;
+      url_video: string | null;
+      url_youtube: string | null;
+      is_done: boolean;
+      id?: string | undefined;
+  }
+}

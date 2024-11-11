@@ -1,11 +1,11 @@
 meta {
-  name: create
+  name: getAll
   type: http
-  seq: 1
+  seq: 2
 }
 
-post {
-  url: {{base_url}}/api/v1/section
+get {
+  url: {{base_url}}/api/v1/sections
   body: json
   auth: none
 }

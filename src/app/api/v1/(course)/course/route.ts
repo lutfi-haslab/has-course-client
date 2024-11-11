@@ -1,10 +1,9 @@
+import { Course } from "@/application/repositories/courseRepositoryImpl";
 import { CourseService } from "@/application/services/coursesServices";
-import { CourseSchema } from "@/entities/models";
-import { TypeOf } from "zod";
 
 export async function POST(req: Request) {
   const service = await CourseService.create();
-  const body = (await req.json()) as TypeOf<typeof CourseSchema>;
+  const body = (await req.json()) as Course;
 
   try {
     const data = await service.createCourse(body);
