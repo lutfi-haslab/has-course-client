@@ -1,5 +1,6 @@
+import { Section } from "@/application/repositories/sectionRepositoryImpl";
 import { SectionService } from "@/application/services/sectionsService";
-import { Section } from "@/entities/models/course";
+
 
 export async function GET(
   req: Request,

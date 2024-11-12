@@ -2,7 +2,7 @@ import { getSupabaseClient, withSentrySpan } from "@/utils/withSentry";
 import {
   AuthorRepository,
   AuthorRepositoryImpl,
-  CreateAuthorDTO,
+  AuthorDTO,
 } from "../repositories/authorRepositoryImpl";
 
 export class AuthorService {
@@ -31,13 +31,13 @@ export class AuthorService {
     );
   }
 
-  createAuthor(data: CreateAuthorDTO) {
+  createAuthor(data: AuthorDTO) {
     return withSentrySpan("AuthorService > createAuthor", () =>
       this.repository.createAuthor(data)
     );
   }
 
-  updateAuthor(id: string, data: Partial<CreateAuthorDTO>) {
+  updateAuthor(id: string, data: Partial<AuthorDTO>) {
     return withSentrySpan("AuthorService > updateAuthor", () =>
       this.repository.updateAuthor(id, data)
     );

@@ -1,10 +1,11 @@
 "use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, User } from "lucide-react";
+import { GraduationCap, Menu, Plus, PlusCircle, User, X } from "lucide-react";
 import { useProfile } from "../(context)/_useProfile";
 import {
   Dialog,
@@ -14,306 +15,366 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import MiniHeaderClient from "@/components/layout/MiniHeaderClient";
+import Link from "next/link";
+import { Course } from "@/application/repositories/courseRepositoryImpl";
+import { useState } from "react";
 
 const AuthorCourseManagement = () => {
   const { state, actions } = useProfile();
+  const [activeView, setActiveView] = useState("authors");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Helper function to determine if an item is selected
-  const isSelected = (id, selectedId) => id === selectedId;
+  const isSelected = (id: string, selectedId: string) => id === selectedId;
 
-  return (
-    <div className="p-6 max-w-7xl mx-auto flex">
-      {/* Sidebar for Authors */}
-      <div className="w-1/4 pr-4">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Authors</h1>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="flex items-center gap-2">
-                <PlusCircle className="w-4 h-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Author</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-2 mt-2">
-                <Input
-                  placeholder="Name"
-                  value={state.authorDTO?.name}
-                  onChange={(e) =>
-                    actions.setAuthorData({ ...state.authorDTO, name: e.target.value })
-                  }
-                />
-                <Input
-                  placeholder="Organization Name"
-                  value={state.authorDTO?.org_name}
-                  onChange={(e) =>
-                    actions.setAuthorData({ ...state.authorDTO, org_name: e.target.value })
-                  }
-                />
-                <Textarea
-                  placeholder="Bio"
-                  value={state.authorDTO?.bio}
-                  onChange={(e) =>
-                    actions.setAuthorData({ ...state.authorDTO, bio: e.target.value })
-                  }
-                />
-              </div>
-              <DialogFooter>
-                <Button onClick={actions.addAuthor}>Add Author</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const CourseCard = ({ course }: {
+    course: Course
+  }) => (
+    <Card
+      key={course.id}
+      className={`cursor-pointer hover:shadow-lg transition-all duration-200 flex flex-col md:flex-row h-full ${
+        isSelected(course.id, state.selectedCourseId)
+          ? "border-2 border-primary"
+          : "border-gray-200"
+      }`}
+      onClick={() => {
+        actions.selectCourse(course.id);
+        setActiveView("sections");
+      }}
+    >
+      {course.banner_img && (
+        <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
+          <img
+            src={course.banner_img}
+            alt={course.title}
+            className="w-full h-full object-cover rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+          />
         </div>
-
-        {/* Author List */}
-        <div className="space-y-4">
-          {state.authors?.data.map((author) => (
-            <Card
-              key={author.id}
-              className={`cursor-pointer hover:shadow-lg transition-shadow ${isSelected(author.id, state.selectedAuthorId) ? 'border-2 border-blue-500' : ''}`}
-              onClick={() => actions.selectAuthor(author.id)}
-            >
-              <CardHeader className="flex flex-row items-center gap-4">
-                <User className="w-8 h-8" />
-                <div>
-                  <h2 className="text-xl font-semibold">{author.name}</h2>
-                  {author.is_org && <Badge>{author.org_name}</Badge>}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">{author.bio}</p>
-              </CardContent>
-            </Card>
+      )}
+      <div className="flex-1 p-6">
+        <h3 className="text-xl font-bold mb-2">{course.title}</h3>
+        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+          {course.description}
+        </p>
+        <div className="flex gap-2 flex-wrap mb-4">
+          {course.tags?.map((tag: any) => (
+            <Badge key={tag?.toString()} variant="secondary">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+        <div className="space-y-2">
+          {course?.checklist?.slice(0, 3).map((item: any, index: any) => (
+            <div key={index} className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                {item}
+              </span>
+            </div>
           ))}
         </div>
       </div>
+    </Card>
+  );
 
-      {/* Main Content for Courses */}
-      <div className="w-3/4">
-        {state.selectedAuthorId && (
-          <div className="mt-8">
+  const ContentCard = ({ item, type, onClick }: any) => (
+    <Card
+      className={`w-full cursor-pointer hover:shadow-lg transition-all duration-200 ${
+        isSelected(item.id, type)
+          ? "border-2 border-primary"
+          : "border-gray-200"
+      }`}
+      onClick={onClick}
+    >
+      <CardHeader>
+        <h3 className="text-lg font-semibold">{item.title}</h3>
+      </CardHeader>
+      <CardContent>
+        <p className="text-gray-600 dark:text-gray-300 line-clamp-3">
+          {item.description}
+        </p>
+      </CardContent>
+    </Card>
+  );
+
+  const renderSectionList = () => (
+    <div className="space-y-4">
+      {state.sections?.data?.map((section) => (
+        <ContentCard
+          key={section.id}
+          item={section}
+          type={state.selectedSectionId}
+          onClick={() => {
+            actions.selectSection(section.id);
+            setActiveView("lessons");
+          }}
+        />
+      ))}
+    </div>
+  );
+
+  const renderLessonList = () => (
+    <div className="space-y-4">
+      {state.lessons?.data?.map((lesson) => (
+        <ContentCard
+          key={lesson.id}
+          item={lesson}
+          type={state.selectedLessonId}
+          onClick={() => actions.selectLesson(lesson.id)}
+        />
+      ))}
+    </div>
+  );
+
+  const renderAddDialog = (type: any) => {
+    const config = {
+      author: {
+        title: "Add New Author",
+        fields: [
+          { name: "name", label: "Name", type: "input" },
+          { name: "org_name", label: "Organization Name", type: "input" },
+          { name: "bio", label: "Bio", type: "textarea" },
+        ],
+        action: actions.addAuthor,
+        appState: state.authorDTO,
+        setState: actions.setAuthorData,
+      },
+      course: {
+        title: "Add New Course",
+        fields: [
+          { name: "title", label: "Title", type: "input" },
+          { name: "banner_img", label: "Image URL", type: "input" },
+          { name: "description", label: "Description", type: "textarea" },
+          { name: "tags", label: "Tags (comma-separated)", type: "input" },
+          {
+            name: "checklist",
+            label: "Checklist (one item per line)",
+            type: "textarea",
+          },
+        ],
+        action: actions.addCourse,
+        appState: state.courseDTO,
+        setState: actions.setCourseData,
+      },
+      section: {
+        title: "Add New Section",
+        fields: [
+          { name: "title", label: "Section Title", type: "input" },
+          {
+            name: "description",
+            label: "Section Description",
+            type: "textarea",
+          },
+        ],
+        action: actions.addSection,
+        appState: state.sectionDTO,
+        setState: actions.setSectionData,
+      },
+      lesson: {
+        title: "Add New Lesson",
+        fields: [
+          { name: "title", label: "Lesson Title", type: "input" },
+          { name: "content_url", label: "Content URL", type: "input" },
+          {
+            name: "description",
+            label: "Lesson Description",
+            type: "textarea",
+          },
+        ],
+        action: actions.addLesson,
+        appState: state.lessonDTO,
+        setState: actions.setLessonData,
+      },
+    };
+
+    const { title, fields, action, appState, setState } = config[type as "author" | "course" | "section" | "lesson"];
+
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="flex items-center gap-2">
+            <PlusCircle className="w-4 h-4" /> Add {type}
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2 mt-2">
+            {fields.map((field) => (
+              field.type === "input"
+                ? (
+                  <Input
+                    key={field.name}
+                    placeholder={field.label}
+                    // @ts-ignore
+                    value={appState?.[field?.name] || ""}
+                    onChange={(e) =>
+                      // @ts-ignore
+                      setState({ ...state, [field.name]: e.target.value })}
+                  />
+                )
+                : (
+                  <Textarea
+                    key={field.name}
+                    placeholder={field.label}
+                    // @ts-ignore
+                    value={appState?.[field.name] || ""}
+                    onChange={(e) =>
+                      // @ts-ignore
+                      setState({ ...state, [field?.name]: e.target.value })}
+                  />
+                )
+            ))}
+          </div>
+          <DialogFooter>
+            <Button onClick={action}>Add {type}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  const renderContent = () => {
+    switch (activeView) {
+      case "courses":
+        return (
+          <div className="w-full">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold">Courses</h2>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="flex items-center gap-2">
-                    <PlusCircle className="w-4 h-4" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Add New Course</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-2 mt-2">
-                    <Input
-                      placeholder="Title"
-                      value={state.courseDTO?.title}
-                      onChange={(e) =>
-                        actions.setCourseData({ ...state.courseDTO, title: e.target.value })
-                      }
-                    />
-                    <Input
-                      placeholder="Image URL"
-                      value={state.courseDTO?.banner_img}
-                      onChange={(e) =>
-                        actions.setCourseData({ ...state.courseDTO, banner_img: e.target.value })
-                      }
-                    />
-                    <Textarea
-                      placeholder="Description"
-                      value={state.courseDTO?.description}
-                      onChange={(e) =>
-                        actions.setCourseData({ ...state.courseDTO, description: e.target.value })
-                      }
-                    />
-                    <Input
-                      placeholder="Tags (comma-separated)"
-                      value={state.courseDTO?.tags?.join(", ")}
-                      onChange={(e) => {
-                        const tagsArray = e.target.value.split(",").map((tag) => tag.trim());
-                        actions.setCourseData({ ...state.courseDTO, tags: tagsArray });
-                      }}
-                    />
-                    <Textarea
-                      placeholder="Checklist (one item per line)"
-                      value={state.courseDTO?.checklist?.join(", ")}
-                      onChange={(e) => {
-                        const checklistArray = e.target.value.split(",").map((item) => item.trim());
-                        actions.setCourseData({ ...state.courseDTO, checklist: checklistArray });
-                      }}
-                    />
-                  </div>
-                  <DialogFooter>
-                    <Button onClick={actions.addCourse}>Add Course</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <h2 className="text-2xl font-bold">Courses</h2>
+              {renderAddDialog("course")}
             </div>
-
-            {/* Course List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-6">
               {state.courses?.data?.map((course) => (
-                <Card
-                  key={course.id}
-                  className={`cursor-pointer hover:shadow-lg transition-shadow ${isSelected(course.id, state.selectedCourseId) ? 'border-2 border-blue-500' : ''}`}
-                  onClick={() => actions.selectCourse(course.id)}
-                >
-                  {course.banner_img && (
-                    <img
-                      src={course.banner_img}
-                      alt={course.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
-                    />
-                  )}
-                  <CardHeader>
-                    <h3 className="text-lg font-semibold">{course.title}</h3>
-                    <div className="flex gap-2 flex-wrap">
-                      {course.tags?.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">{course.description}</p>
-                    <ul className="list-disc list-inside">
-                      {course?.checklist?.map((item, index) => (
-                        <li key={index} className="text-sm text-gray-600">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                <CourseCard key={course.id} course={course} />
               ))}
             </div>
           </div>
-        )}
-
-        {/* Sections and Lessons */}
-        {state.selectedCourseId && (
-          <div className="mt-8">
+        );
+      case "sections":
+        return (
+          <div className="w-full">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold">Sections</h2>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="flex items-center gap-2">
-                    <PlusCircle className="w-4 h-4" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Add New Section</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-2 mt-2">
-                    <Input
-                      placeholder="Section Title"
-                      value={state.sectionDTO?.title}
-                      onChange={(e) =>
-                        actions.setSectionData({ ...state.sectionDTO, title: e.target.value })
-                      }
-                    />
-                    <Textarea
-                      placeholder="Section Description"
-                      value={state.sectionDTO?.description}
-                      onChange={(e) =>
-                        actions.setSectionData({ ...state.sectionDTO, description: e.target.value })
-                      }
-                    />
-                  </div>
-                  <DialogFooter>
-                    <Button onClick={actions.addSection}>Add Section</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <h2 className="text-2xl font-bold">Sections</h2>
+              {renderAddDialog("section")}
             </div>
-
-            {/* Section List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {state.sections?.data?.map((section) => (
-                <Card
-                  key={section.id}
-                  className={`cursor-pointer hover:shadow-lg transition-shadow ${isSelected(section.id, state.selectedSectionId) ? 'border-2 border-blue-500' : ''}`}
-                  onClick={() => actions.selectSection(section.id)}
-                >
-                  <CardHeader>
-                    <h3 className="text-lg font-semibold">{section.title}</h3>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{section.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {state.selectedSectionId && (
-              <div className="mt-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Lessons</h2>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="flex items-center gap-2">
-                        <PlusCircle className="w-4 h-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Add New Lesson</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-2 mt-2">
-                        <Input
-                          placeholder="Lesson Title"
-                          value={state.lessonDTO?.title}
-                          onChange={(e) =>
-                            actions.setLessonData({ ...state.lessonDTO, title: e.target.value })
-                          }
-                        />
-                        <Input
-                          placeholder="Content URL"
-                          value={state.lessonDTO?.content_url}
-                          onChange={(e) =>
-                            actions.setLessonData({ ...state.lessonDTO, content_url: e.target.value })
-                          }
-                        />
-                        <Textarea
-                          placeholder="Lesson Description"
-                          value={state.lessonDTO?.description}
-                          onChange={(e) =>
-                            actions.setLessonData({ ...state.lessonDTO, description: e.target.value })
-                          }
-                        />
-                      </div>
-                      <DialogFooter>
-                        <Button onClick={actions.addLesson}>Add Lesson</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-
-                {/* Lesson List */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {state.lessons?.data?.map((lesson) => (
-                    <Card
-                      key={lesson.id}
-                      className={`cursor-pointer hover:shadow-lg transition-shadow ${isSelected(lesson.id, state.selectedLessonId) ? 'border-2 border-blue-500' : ''}`}
-                      onClick={() => actions.selectLesson(lesson.id)}
-                    >
-                      <CardHeader>
-                        <h3 className="text-lg font-semibold">{lesson.title}</h3>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600">{lesson.description}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
+            {renderSectionList()}
           </div>
-        )}
+        );
+      case "lessons":
+        return (
+          <div className="w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Lessons</h2>
+              {renderAddDialog("lesson")}
+            </div>
+            {renderLessonList()}
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="flex flex-1 max-w-full dark:bg-gray-900">
+      {/* Mobile sidebar toggle */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-800 shadow-lg"
+        onClick={toggleSidebar}
+      >
+        {isSidebarOpen
+          ? <X className="h-6 w-6" />
+          : <Menu className="h-6 w-6" />}
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`fixed md:relative w-64 h-screen transition-transform duration-300 ease-in-out z-40 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        <Sidebar variant="sidebar" className="w-[16vw] h-full border-r">
+          <SidebarHeader className="p-4">
+            <Link className="flex items-center space-x-2" href="/">
+              <GraduationCap className="h-8 w-8 text-primary" />
+              <span className="text-xl font-bold">LearnHub</span>
+            </Link>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarMenu>
+              {state.authors?.data?.map((author) => (
+                <SidebarMenuItem key={author.id}>
+                  <SidebarMenuButton
+                    isActive={isSelected(author.id, state.selectedAuthorId)}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => {
+                      actions.selectAuthor(author.id);
+                      setActiveView("courses");
+                      setIsSidebarOpen(false);
+                    }}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <User className="w-4 h-4" />
+                      <span>{author.name}</span>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarContent>
+          <div className="p-4">
+            <Button
+              className="w-full"
+              onClick={() => renderAddDialog("author")}
+            >
+              <Plus className="mr-2 h-4 w-4" /> Add Author
+            </Button>
+          </div>
+        </Sidebar>
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1">
+        <MiniHeaderClient />
+        <div className="w-[84vw] h-screen overflow-y-auto">
+          <div className="p-6 mt-16 ">
+            <div className="mb-6 flex space-x-2  pb-2">
+              <Button
+                variant={activeView === "courses" ? "default" : "outline"}
+                onClick={() => setActiveView("courses")}
+                disabled={!state.selectedAuthorId}
+              >
+                Courses
+              </Button>
+              <Button
+                variant={activeView === "sections" ? "default" : "outline"}
+                onClick={() => setActiveView("sections")}
+                disabled={!state.selectedCourseId}
+              >
+                Sections
+              </Button>
+              <Button
+                variant={activeView === "lessons" ? "default" : "outline"}
+                onClick={() => setActiveView("lessons")}
+                disabled={!state.selectedSectionId}
+              >
+                Lessons
+              </Button>
+            </div>
+            {renderContent()}
+          </div>
+        </div>
       </div>
     </div>
   );
